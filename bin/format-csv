@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+'''
+Read csv files from Argenta's semicolon delimited format which is encoded in
+ISO-8859-1 and convert it to utf-8. Also, fix the order the dates and sew the
+files together.
+
+Make sure LANG and LC_ALL are set to en_US.UTF-8 or some other UTF-8 locale to
+be able to use this. Otherwise there will be errors are the program attempts to
+convert data to ascii (i.e. locale set to "C") and print to the console. This is
+prone to happen on OS X where locales are all messed up.
+'''
+
+import sys
+import argenta
+
+def print_usage():
+    return '''format-csv <csv-files-from-argenta>'''
+
+COLUMNS = [
+    'ValueDate',
+    'RefNum',
+    'Type',
+    'Amount',
+    'Currency',
+    'EventDate',
+    'CounterpartyAccount',
+    'Counterparty',
+    'Note1',
+    'Note2'
+]
+
+def main(args):
+    if len(args) < 2:
+        print_usage()
+        sys.exit(1)
+
+    data = argenta.read_raw_csv(args)
+    data.to_csv('/dev/stdout')
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))

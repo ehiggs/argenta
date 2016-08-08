@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+
+import sys
+import argenta
+import pandas as p
+
+def main(args):
+    if len(args) < 2:
+        print('Usage: analyse <input-file>  Read and analyse input-file', file=sys.stderr)
+        print('       analyse --            Read from stdin', file=sys.stderr)
+        sys.exit(1)
+    infile = args[1] if args[1] != '--' else sys.stdin
+    data = argenta.read_csv(infile)
+    print(argenta.annual_costs(data))
+    print(argenta.annual_credit(data))
+    print(argenta.monthly_costs(data))
+    print(argenta.monthly_credit(data))
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
